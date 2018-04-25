@@ -342,7 +342,7 @@ void clearTimer0B(uint32_t base_addr){
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //New timer to set up in PWM mode
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool gp_timer_config_24(uint32_t base_addr, uint32_t mode, bool count_up, bool enable_interrupts)
+bool gp_timer_config_16PWM(uint32_t base_addr, uint32_t mode, bool count_up, bool enable_interrupts, uint32_t ticks)
 {
   uint32_t timer_rcgc_mask;
   uint32_t timer_pr_mask;
@@ -369,35 +369,49 @@ bool gp_timer_config_24(uint32_t base_addr, uint32_t mode, bool count_up, bool e
   //*********************    
   // ADD CODE
   //*********************
-	gp_timer -> CTL &= ~TIMER_CTL_TAEN;
-	gp_timer -> CTL &= ~TIMER_CTL_TBEN;
-		
-	gp_timer -> CFG |= TIMER_CFG_32_BIT_TIMER;
-	
-	gp_timer -> TAMR &= ~TIMER_TAMR_TAMR_M;
-	gp_timer -> TAMR &= ~TIMER_TBMR_TBMR_M;
-
-	gp_timer -> TAMR |= (mode);
-		
-	gp_timer ->TAMR &= ~TIMER_TAMR_TACMR; //Clear the TACMR bit. 
-
-	gp_timer ->TAMR |= TIMER_TAMR_TAAMS; //Set bit to enable PWM mode
-
-
-	if (count_up){
-		gp_timer -> TAMR |= ~TIMER_TAMR_TACDIR;
-	}
-	else{
-		gp_timer -> TAMR &= ~TIMER_TAMR_TACDIR;
-	}
-	
-	if (enable_interrupts){
-		gp_timer -> IMR |= TIMER_IMR_TATOIM;
-	}
-	else{
-		gp_timer -> IMR &= ~TIMER_IMR_TATOIM;
-	}
-
+		gp_timer->CTL &= ~TIMER_CTL_TAEN; 
+		gp_timer->CTL &= ~TIMER_CTL_TBEN;
     
+		gp_timer->CFG = TIMER_CFG_16_BIT; 
+		
+		//First clear the mode bits
+		gp_timer->TAMR &= ~TIMER_TAMR_TAMR_M; 
+
+    //set the timer's mode based on the 'mode' parameter passed to the function
+		gp_timer->TAMR |= mode;
+		
+		gp_timer ->TAMR &= ~TIMER_TAMR_TACMR; //Clear the TACMR bit. 
+		gp_timer ->TAMR |= TIMER_TAMR_TAAMS; //Set bit to enable PWM mode
+		
+		//Set direction to count up if requested
+		if(count_up){
+			gp_timer->TAMR |= TIMER_TAMR_TACDIR;
+		} else{
+			gp_timer->TAMR &= ~TIMER_TAMR_TACDIR; 
+
+		}
+		
+		if(enable_interrupts){
+			gp_timer->IMR |= TIMER_IMR_TATOIM; 
+		} else {
+			gp_timer->IMR &= ~TIMER_IMR_TATOIM;
+		}
+		// Set the Priority /////***added by mark
+  NVIC_SetPriority(TIMER0A_IRQn, 1);
+		
+  // Enable the Interrupt in the NVIC
+  NVIC_EnableIRQ(TIMER0A_IRQn);
+	
+		///****** ^^^added by mark
+		
+		gp_timer->TAILR |= ticks; 
+		
+		gp_timer->TAPR &= ~TIMER_TAPR_TAPSR_M;
+		gp_timer->TAPR |= 7; 
+		
+		
+		//Renable Timers
+		gp_timer->CTL |= TIMER_CTL_TAEN; 
+
   return true;  
 }
