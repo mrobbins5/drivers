@@ -35,6 +35,12 @@
  /************************************************************************
  ************************************************************************/
  
+ 
+ //We created
+ #define GPIO_PCTL_PD7_PHB0   0x60000000  // PhB0 on PD7
+ #define GPIO_PCTL_PD6_PHA0   0x06000000  // PhA0 on PD6
+ 
+ 
 //*****************************************************************************
 //
 // The following are defines for the bit fields in the SYSCTL_DID0 register.
@@ -1278,7 +1284,7 @@
                                             // Gating Control
 #define SYSCTL_RCGCGPIO_R6      0x00000040  // GPIO Port G Run Mode Clock
                                             // Gating Control
-#define SYSCTL_RCGCGPIO_R5      0x00000020  // GPIO Port F Run Mode Clock ////////////
+#define SYSCTL_RCGCGPIO_R5      0x00000020  // GPIO Port F Run Mode Clock
                                             // Gating Control
 #define SYSCTL_RCGCGPIO_R4      0x00000010  // GPIO Port E Run Mode Clock
                                             // Gating Control
@@ -2011,7 +2017,7 @@
 // The following are defines for the bit fields in the SYSCTL_PRGPIO register.
 //
 //*****************************************************************************
-#define SYSCTL_PRGPIO_R14       0x00004000  // GPIO Port Q Peripheral Ready	
+#define SYSCTL_PRGPIO_R14       0x00004000  // GPIO Port Q Peripheral Ready
 #define SYSCTL_PRGPIO_R13       0x00002000  // GPIO Port P Peripheral Ready
 #define SYSCTL_PRGPIO_R12       0x00001000  // GPIO Port N Peripheral Ready
 #define SYSCTL_PRGPIO_R11       0x00000800  // GPIO Port M Peripheral Ready
@@ -2020,7 +2026,7 @@
 #define SYSCTL_PRGPIO_R8        0x00000100  // GPIO Port J Peripheral Ready
 #define SYSCTL_PRGPIO_R7        0x00000080  // GPIO Port H Peripheral Ready
 #define SYSCTL_PRGPIO_R6        0x00000040  // GPIO Port G Peripheral Ready
-#define SYSCTL_PRGPIO_R5        0x00000020  // GPIO Port F Peripheral Ready	  ////////////////////Use as a mask
+#define SYSCTL_PRGPIO_R5        0x00000020  // GPIO Port F Peripheral Ready
 #define SYSCTL_PRGPIO_R4        0x00000010  // GPIO Port E Peripheral Ready
 #define SYSCTL_PRGPIO_R3        0x00000008  // GPIO Port D Peripheral Ready
 #define SYSCTL_PRGPIO_R2        0x00000004  // GPIO Port C Peripheral Ready
@@ -2367,9 +2373,9 @@
 #define GPIO_PCTL_PF3_CAN0TX    0x00003000  // CAN0TX on PF3
 #define GPIO_PCTL_PF3_T1CCP1    0x00007000  // T1CCP1 on PF3
 #define GPIO_PCTL_PF3_TRCLK     0x0000E000  // TRCLK on PF3
-#define GPIO_PCTL_PF2_M         0x00000F00  // PF2 mask/////////////////////////
+#define GPIO_PCTL_PF2_M         0x00000F00  // PF2 mask
 #define GPIO_PCTL_PF2_SSI1CLK   0x00000200  // SSI1CLK on PF2
-#define GPIO_PCTL_PF2_T1CCP0    0x00000700  // T1CCP0 on PF2////////////////////
+#define GPIO_PCTL_PF2_T1CCP0    0x00000700  // T1CCP0 on PF2
 #define GPIO_PCTL_PF2_TRD0      0x00000E00  // TRD0 on PF2
 #define GPIO_PCTL_PF1_M         0x000000F0  // PF1 mask
 #define GPIO_PCTL_PF1_U1CTS     0x00000010  // U1CTS on PF1
@@ -4173,6 +4179,7 @@
                                             // Status
 #define UART_MIS_RXMIS          0x00000010  // UART Receive Masked Interrupt
                                             // Status
+																						
 #define UART_MIS_CTSMIS         0x00000002  // UART Clear to Send Modem Masked
                                             // Interrupt Status
 
